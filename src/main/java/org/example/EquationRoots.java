@@ -2,6 +2,16 @@ package org.example;
 
 import java.util.Scanner;
 
+class Pair {
+    Double first;
+    Double second;
+
+    public Pair(Double first, Double second) {
+        this.first = first;
+        this.second = second;
+    }
+}
+
 public class EquationRoots {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -13,23 +23,33 @@ public class EquationRoots {
         System.out.println("Введите аргумент c:");
         double numberC = scanner.nextDouble();
 
-        String result = findRoots(numberA, numberB, numberC);
-        System.out.println(result);
+        Pair result = findRoots(numberA, numberB, numberC);
+        printResult(result);
 
         scanner.close();
     }
 
-    public static String findRoots(double numberA, double numberB, double numberC) {
+    public static Pair findRoots(double numberA, double numberB, double numberC) {
         double discriminant = numberB * numberB - 4 * numberA * numberC;
         if (discriminant > 0) {
             double numberX1 = (-numberB + Math.sqrt(discriminant)) / (2 * numberA);
             double numberX2 = (-numberB - Math.sqrt(discriminant)) / (2 * numberA);
-            return "Корни уравнения: x1=" + numberX1 + " x2=" + numberX2;
+            return new Pair(numberX1, numberX2);
         } else if (discriminant == 0) {
             double numberX1 = -numberB / (2 * numberA);
-            return "Корень уравнения: x1=" + numberX1;
+            return new Pair(numberX1, null);
         } else {
-            return "Нет вещественных корней";
+            return new Pair(null, null); // Нет вещественных корней
+        }
+    }
+
+    public static void printResult(Pair result) {
+        if (result.first != null && result.second != null) {
+            System.out.println("Корни уравнения: x1=" + result.first + " x2=" + result.second);
+        } else if (result.first != null) {
+            System.out.println("Корень уравнения: x1=" + result.first);
+        } else {
+            System.out.println("Нет вещественных корней");
         }
     }
 }
